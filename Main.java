@@ -36,31 +36,22 @@ class Main {
 	
 	public static int maxAreaOfIsland(int[][] grid) {
 		Integer area = 0;
-		Integer max = 0;
-		for (int i = 0; i <= grid.length - 2; i++) {
-			for (int j = 0; j <= grid[1].length - 2; j++) {
-				int current = grid[i][j];
-				boolean nextRight = grid[i][j + 1] == 1;
-				boolean nextDown = grid[i + 1][j] == 1;
-				if (current > 0) {
-					area++;
-					if (nextRight) {
-						area++;
-					}
-					if (nextDown) {
-						area++;
-					}
-				} 
-				else if (!nextRight && !nextDown){
-					if(max < area) {
-						max = area;
-					}
-					area = 0;
-				}
-			}
-		}
-		System.out.println("area :" + max);
-		return max;
+		int x = grid.length;
+		int y = grid[0].length;
+		for (int i = 0; i < x; i++)
+			for (int j = 0; j < y; j++)
+				if (grid[i][j] > 0)
+					area = Math.max(area, traverseAndReplace(i, j, grid));
+		return area;
+	}
+
+	private static int traverseAndReplace(int i, int j, int[][] grid) {
+		int x = grid.length;
+		int y = grid[0].length;
+		if (i < 0 || j < 0 || i >= x || j >= y || grid[i][j] < 1)
+			return 0;
+		grid[i][j] = 0;
+		return 1 + traverseAndReplace(i - 1, j, grid) + traverseAndReplace(i, j - 1, grid) + traverseAndReplace(i + 1, j, grid) + traverseAndReplace(i, j + 1, grid);
 	}
 }
 
